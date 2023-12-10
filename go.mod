@@ -1,6 +1,6 @@
 module markupai
 
-go 1.21.5
+go 1.17
 
 require github.com/gin-gonic/gin v1.9.1
 
