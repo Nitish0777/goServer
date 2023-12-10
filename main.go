@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"net/http"
+	"os"
 	"sort"
 	"sync"
 	"time"
@@ -30,8 +31,9 @@ func main() {
 	r.POST("/process-concurrent", processConcurrent)
 
 	// Start the Gin server
-	fmt.Println("Listening on port 8000...")
-	r.Run(":8000")
+	port := getEnv("PORT", "8000")
+	fmt.Printf("Listening on port %s...\n", port)
+	r.Run(":" + port)
 }
 
 func processSingle(c *gin.Context) {
@@ -110,4 +112,12 @@ func sortConcurrent(arr []int, ch chan struct {
 		index int
 		arr   []int
 	}{index, sortedArr}
+}
+
+func getEnv(key, defaultValue string) string {
+	value, exists := os.LookupEnv(key)
+	if !exists {
+		return defaultValue
+	}
+	return value
 }
